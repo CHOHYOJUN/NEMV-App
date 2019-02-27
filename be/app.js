@@ -4,18 +4,20 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const history = require('connect-history-api-fallback');
+const cors = require('cors')
 
 var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// fe에서 be와 통신할수 있다.
+app.use(cors());
+// * api 미들웨어
 app.use('/api', require('./routes/api'))
+
 app.use(history()) //fe의 라우터로 빠지게
 app.use(express.static(path.join(__dirname, '../', 'fe', 'dist')));
 
@@ -33,7 +35,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.send({ msg: err.message });
 });
 
 module.exports = app;

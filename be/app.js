@@ -6,6 +6,10 @@ var logger = require('morgan');
 const history = require('connect-history-api-fallback');
 const cors = require('cors')
 
+const mongoose = require('mongoose')
+const User = require('./models/users')
+
+
 var app = express();
 
 app.use(logger('dev'));
@@ -39,3 +43,13 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+mongoose.connect("mongodb://localhost:27017/nemv", {useNewUrlParser: true},(err) => {
+  if(err) return console.log(err);
+  console.log('mongoose connected');
+
+    User.find()
+    .then((result) => console.log(result))
+    .catch((err) => console.error(err))
+
+});

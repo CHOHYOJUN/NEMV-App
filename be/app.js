@@ -42,14 +42,15 @@ app.use(function(err, req, res, next) {
   res.send({ msg: err.message });
 });
 
-module.exports = app;
-
-mongoose.connect("mongodb://localhost:27017/nemv", {useNewUrlParser: true},(err) => {
+const cfg = require('../config');
+mongoose.connect(cfg.dbUrl, {useNewUrlParser: true},(err) => {
   if(err) return console.log(err);
   console.log('mongoose connected');
 
-    User.find()
-    .then((result) => console.log(result))
+  User.find()
+  .then((result) => console.log(result))
     .catch((err) => console.error(err))
 
 });
+
+  module.exports = app;

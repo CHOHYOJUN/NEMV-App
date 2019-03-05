@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import User from './views/User.vue'
+import Sign from './views/Sign.vue'
 
 Vue.use(Router)
 
@@ -32,5 +33,10 @@ export default new Router({
       name: 'user',
       component: User
     },
+    {
+      path: '/sign',
+      name: 'sign',
+      component: Sign
+    }
   ]
 })

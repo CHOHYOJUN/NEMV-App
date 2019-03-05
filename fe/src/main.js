@@ -7,7 +7,7 @@ import store from './store'
 import axios from 'axios'
 
 Vue.prototype.$axios = axios
-
+Vue.prototype.$apiRootPath = 'http://localhost:3000/api/'
 Vue.config.productionTip = false
 
 new Vue({

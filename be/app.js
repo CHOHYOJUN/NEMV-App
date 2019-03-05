@@ -9,6 +9,7 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const User = require('./models/users')
 
+const jwt = require('jsonwebtoken')
 
 var app = express();
 
@@ -52,5 +53,16 @@ mongoose.connect(cfg.dbUrl, {useNewUrlParser: true},(err) => {
     .catch((err) => console.error(err))
 
 });
+
+//ㅡㅡㅡㅡㅡㅡㅡ token ㅡㅡㅡㅡㅡㅡㅡㅡ
+// const key = '어머나어머니'
+// const token = jwt.sign({ id:'memi', email:'lion@naver.com'}, key)
+// console.log(token);
+
+// const decoded = jwt.verify(token, key)
+// console.log ( new Date(decoded.iat * 1000));
+
+// console.log(decoded);
+
 
   module.exports = app;

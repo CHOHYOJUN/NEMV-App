@@ -7,9 +7,11 @@ const User = require('../../../models/users');
 
 
 // id, age + secretKey 로 token 만들기
-const signToken = (id, age) => {
+const signToken = (id, lv, name) => {
+  console.log('~~~');
+  console.log(id, lv, name);
   return new Promise((resolve, reject) => {
-    jwToken.sign({ id, age }, config.secretKey, (error, token) => {
+    jwToken.sign({ id, lv, name }, config.secretKey, (error, token) => {
       if(error) {
         console.log('token 발행 문제');
         reject(error)
@@ -30,8 +32,12 @@ router.post('/in', (req, res) => {
   User.findOne({ id })
     .then((result) => {
       if (!result) throw new Error('존재하지 않는 아이디 입니다.')
-      if (result.password !== password) throw new Error('비밀번호가 틀립니다.')
-      return signToken(result.id, result.age)
+      console.log('1//');
+      console.log(result.pwd);
+      console.log('2//');
+      console.log(password);
+      if (result.pwd !== password) throw new Error('비밀번호가 틀립니다.')
+      return signToken(result.id, result.lv, result.name)
     })
     .then((result) => {
       res.send({ success : true, token: result })

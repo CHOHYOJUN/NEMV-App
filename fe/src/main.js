@@ -5,10 +5,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
+Vue.config.productionTip = false
 
 Vue.prototype.$axios = axios
-Vue.prototype.$apiRootPath = 'http://localhost:3000/api/'
-Vue.config.productionTip = false
+const apiRootPath = 'http://localhost:3000/api/'
+Vue.prototype.$apiRootPath = apiRootPath
 
 new Vue({
   router,

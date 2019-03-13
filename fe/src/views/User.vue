@@ -1,332 +1,154 @@
 <template>
-  <div
-    id="e3"
-    style="max-width: 1200px; margin: auto;"
-    class="grey lighten-3"
-  >
-    <v-card>
-      <v-container
-        fluid
-        style="min-height: 0;"
-        grid-list-lg
-      >
-        <v-layout >
-          <v-flex xs12>
-            <v-card color="cyan darken-2" class="white--text">
-              <v-container fluid grid-list-lg>
-                <v-layout>
-                  <v-flex>
-                      <div class="headline">CRUD Api Test</div>
-                       <template
-                        v-for="(user, index) in users"
-                        >
-                        <v-chip
-                          class="mx-auto title"
-                          align-start
-                          label
-                          :key="index"
-                        >{{ user.name }} / [{{ user.age }}]
-                        <v-spacer></v-spacer>
-                        <v-flex>
-                            <v-btn
-                            small
-                            flat
-                            icon
-                            @click="deleteReq(user._id)"
-                            >
-                              <v-icon
-                              color="red lighten-6"
-                              >delete</v-icon>
-                          </v-btn>
+  <v-container grid-list-md>
+    <v-layout row wrap>
+      <v-flex xs12 sm6 md4 v-for="user in users" :key="user._id">
 
-                           <v-btn
-                            small
-                            flat
-                            icon
-                            @click="modalUp(user)"
-                            >
-                              <v-icon
-                              color="purple darken-3"
-                              >create</v-icon>
-                          </v-btn>
-                         </v-flex>
-                       </v-chip>
-                    </template>
-                  </v-flex>
-                 <v-btn
-                  absolute
-                  dark
-                  fab
-                  top
-                  right
-                  small
-                  color="warning"
-                  @click="modalUp()"
-                >
-                <v-icon>add</v-icon>
-               </v-btn>
-
-                </v-layout>
-              </v-container>
-            </v-card>
-          </v-flex>
-
-           <v-flex xs12>
-            <v-card color="purple darken-2" class="white--text">
-              <v-container fluid grid-list-lg>
-                <v-layout row>
-                  <v-flex xs7>
-                    <div>
-                      <div class="headline">Post Api</div>
-                      <div>{{ postMsg }}</div>
-                    </div>
-                  </v-flex>
-                  <v-btn
-                    absolute
-                    dark
-                    fab
-                    top
-                    right
-                    small
-                    color="warning"
-                    @click="modalUp()"
-                  >
-                  <v-icon>add</v-icon>
-                </v-btn>
-                </v-layout>
-              </v-container>
-            </v-card>
-          </v-flex>
-
-          <v-flex xs12>
-            <v-card color="lime lighten-1" class="white--text">
-              <v-container fluid grid-list-lg>
-                <v-layout row>
-                  <v-flex xs7>
-                    <div>
-                      <div class="headline">Put Api</div>
-                      <div>{{ putMsg }}</div>
-                    </div>
-                  </v-flex>
-                  <v-btn
-                  absolute
-                  dark
-                  fab
-                  top
-                  right
-                  small
-                  color="warning"
-                  @click="putReq(user._id)"
-                >
-                <v-icon>add</v-icon>
-               </v-btn>
-                </v-layout>
-              </v-container>
-            </v-card>
-          </v-flex>
-
-          <v-flex xs12>
-            <v-card color="orange lighten-1" class="white--text">
-              <v-container fluid grid-list-lg>
-                <v-layout row>
-                  <v-flex xs7>
-                    <div>
-                      <div class="headline">Delete Api</div>
-                      <div>{{ deleteMsg }}</div>
-                    </div>
-                  </v-flex>
-                  <v-btn
-                    absolute
-                    dark
-                    fab
-                    top
-                    right
-                    small
-                    color="warning"
-                    @click="deleteReq()"
-                  >
-                  <v-icon>add</v-icon>
-                </v-btn>
-                </v-layout>
-              </v-container>
-            </v-card>
-          </v-flex>
-
-        </v-layout>
-
-       <v-dialog v-model="dialog" persistent max-width="500px">
-          <v-card>
-            <v-card-title>
-              <span class="headline"
-              v-if="!this.upDateId"
-              >User SignUp</span>
-              <span class="headline"
-              v-else
-              >User Update</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container grid-list-md>
-                <v-layout wrap>
-
-                  <v-flex xs12>
-                    <v-text-field
-                    label="Name"
-                    required
-                    v-model="inputName"
-                    ></v-text-field>
-                  </v-flex>
-
-                  <v-flex xs12 >
-                    <v-select
-                      label="Age"
-                      required
-                      :items="ages"
-                      v-model="inputAge"
-                    ></v-select>
-                  </v-flex>
-
-                </v-layout>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" flat @click.native="dialog = false">Close</v-btn>
-              <v-btn
-              v-if="!this.upDateId"
-              color="green darken-1"
-              flat
-              @click="postReq()"
-              >Save</v-btn>
-               <v-btn
-              v-else
-              color="purple darken-1"
-              flat
-               @click="putReq()"
-              >Update</v-btn>
-            </v-card-actions>
-          </v-card>
-      </v-dialog>
-
-      <v-snackbar
-          top
-          :timeout="3000"
-          :color="snColor"
-          v-model="snackbar"
-        >{{ postCheck }}
-        <v-btn
-        dark
+        <v-card>
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">{{user.id}}</h3>
+            </div>
+          </v-card-title>
+          <v-divider light></v-divider>
+          <v-card-title primary-title>
+            <div>
+              <div>이름: {{user.name}}</div>
+              <div>권한: {{user.lv}}</div>
+              <div>나이: {{user.age}}</div>
+              <div>로그인 횟수: {{user.inCnt}}</div>
+            </div>
+          </v-card-title>
+          <v-divider light></v-divider>
+          <v-card-actions>
+            <v-btn flat color="orange" @click="putDialog(user)">수정</v-btn>
+            <v-btn flat color="error" @click="delUser(user._id)">삭제</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+    </v-layout>
+    <v-dialog v-model="dialog" persistent max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">User Profile</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12 sm6 md4>
+                <v-text-field
+                  label="이름"
+                  hint="홍길동"
+                  persistent-hint
+                  required
+                  v-model="userName"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6>
+                <v-select
+                  :items="userLvs"
+                  label="권한"
+                  required
+                  v-model="userLv"
+                ></v-select>
+              </v-flex>
+              <v-flex xs12 sm6>
+                <v-select
+                  :items="userAges"
+                  label="나이"
+                  required
+                  v-model="userAge"
+                ></v-select>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="putUser">수정</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="dialog = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-snackbar
+      v-model="snackbar"
+    >
+      {{ sbMsg }}
+      <v-btn
+        color="pink"
         flat
-        @click.native="snackbar = false"
-        >Close</v-btn>
-      </v-snackbar>
-
-      </v-container>
-    </v-card>
-  </div>
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
+  </v-container>
 </template>
-
 <script>
-  export default {
-  data(){
+
+export default {
+  data () {
     return {
+      users: [],
       dialog: false,
-      users : [],
-      getMsg: '',
-      postMsg: '',
-      putMsg: '',
-      deleteMsg: '',
-      ages : [],
-      inputName: '',
-      inputAge: 0,
-      snColor: '',
+      userAges: [],
+      userLvs: [],
+      userAge: 0,
+      userLv: 0,
+      userName: '',
       snackbar: false,
-      postCheck: '',
-      upDateId: ''
+      sbMsg: '',
+      putId: ''
     }
   },
-  mounted() {
-    for(let i = 20 ; i<40 ; i++) this.ages.push(i)
-
-     this.$nextTick(() => {
-      return this.getReq()
-    })
-  },
-  created() {
-
+  mounted () {
+    for (let i = 10; i < 40; i++) this.userAges.push(i)
+    for (let i = 0; i < 4; i++) this.userLvs.push(i)
+    this.getUsers()
   },
   methods: {
-    getReq () {
-      this.$axios.get('http://localhost:3000/api/user').then((result) => {
-      this.users = result.data.users;
-    })
-    .catch((err) => {
-      console.error(err.message);
-    })
+    getUsers () {
+      this.$axios.get(`${this.$apiRootPath}manage/user`)
+        .then((r) => {
+          this.users = r.data.users
+        })
+        .catch((e) => {
+          this.pop(e.message)
+        })
     },
-    postReq () {
-      this.$axios.post('http://localhost:3000/api/user', {
-        name: this.inputName, age: this.inputAge
+    putDialog (user) {
+      this.putId = user._id
+      this.dialog = true
+      this.userName = user.name
+      this.userLv = user.lv
+      this.userAge = user.age
+    },
+    putUser () {
+      this.dialog = false
+      this.$axios.put(`${this.$apiRootPath}manage/user/${this.putId}`, {
+        name: this.userName, lv: this.userLv, age: this.userAge
       })
-      .then((result) => {
-      console.log(result.data);
-      this.postMsg = result.data
-      this.dialog = false
-      this.pop(result.data.success)
-      this.getReq()
-    })
-    .catch((err) => {
-      console.error(err.message);
-      this.pop(false)
-    })
+        .then((r) => {
+          this.pop('사용자 수정 완료')
+          this.getUsers()
+        })
+        .catch((e) => {
+          this.pop(e.message)
+        })
     },
-    putReq () {
-      // this.modalUp()
-      this.$axios.put(`http://localhost:3000/api/user/${this.upDateId}`, {
-        name: this.inputName, age: this.inputAge
-      }).then((result) => {
-      this.dialog = false
-      this.pop(result.data.success)
-      this.getReq()
-    })
-    .catch((err) => {
-      console.error(err.message);
-    })
+    delUser (id) {
+      this.$axios.delete(`${this.$apiRootPath}manage/user/${id}`)
+        .then((r) => {
+          this.pop('사용자 삭제 완료')
+          this.getUsers()
+        })
+        .catch((e) => {
+          this.pop(e.message)
+        })
     },
-    deleteReq (_id) {
-      this.$axios.delete(`http://localhost:3000/api/user/${_id}`, {
-      }).then((result) => {
-      this.pop(result.data.success)
-      this.getReq()
-    })
-    .catch((err) => {
-      console.error(err.message);
-    })
-    },
-    modalUp (user) {
-      if(user){
-        this.upDateId = user._id
-        this.inputName = user.name
-        this.inputAge = user.age
-      }else{
-        this.inputName = ""
-        this.inputAge = ""
-      }
-       this.dialog = true
-    },
-    pop (result) {
+    pop (msg) {
       this.snackbar = true
-      if(result){
-      this.postCheck = "성공"
-      this.snColor = "success"
-      return
-      }
-      this.postCheck = "실패"
-      this.snColor = "error"
-    },
+      this.sbMsg = msg
+    }
   }
-  }
+}
 </script>
-
-<style scoped>
-
-</style>

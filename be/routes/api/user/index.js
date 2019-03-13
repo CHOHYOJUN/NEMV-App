@@ -1,66 +1,42 @@
 var express = require('express');
 var createError = require('http-errors');
-
-// const mongoose = require('mongoose')
-
-const User = require('../../../models/users')
-
 var router = express.Router();
+const User = require('../../../../models/users')
 
-/* GET users listing. */
 router.get('/', function(req, res, next) {
-
-    User.find()
-    .then((result) => {
-        res.send({ users: result });
-      })
-      .catch((err) => {
-        console.error(err);
-      })
- });
-
-router.post("/", ( req, res, next) => {
-  const { name, age } = req.body;
-  const newUser = new User({ name, age });
-
-  newUser.save()
-    .then((result) => {
-      res.send( { success: true , msg: result })
+  User.find()
+    .then(r => {
+      res.send({ success: true, users: r })
     })
-    .catch((err) => {
-      console.error(err)
-      res.send( { success: false })
+    .catch(e => {
+      res.send({ success: false })
     })
 });
 
-router.put("/:id", ( req, res, next) => {
-  const updateId = req.params.id
-  const { name, age } = req.body
-  User.updateOne({ _id: updateId }, { $set: { name , age }})
-    .then((result) => {
-      res.send({ success : true })
+router.put('/:_id', (req, res, next) => {
+  const _id = req.params._id
+  User.updateOne({ _id }, { $set: req.body})
+    .then(r => {
+      res.send({ success: true, msg: r })
     })
-    .catch((err) => {
-      console.error(err.message);
-      res.send({ success : false })
+    .catch(e => {
+      res.send({ success: false, msg: e.message })
     })
-});
+})
 
-router.delete("/:id", ( req, res, next) => {
-  const  delete_id = req.params.id
-  User.deleteOne( { _id: delete_id })
-    .then((result) => {
-      res.send({ success : true })
+router.delete('/:_id', (req, res, next) => {
+  const _id = req.params._id
+  User.deleteOne({ _id })
+    .then(r => {
+      res.send({ success: true, msg: r })
     })
-    .catch((err) => {
-      console.error(err.message);
-      res.send({ success : false })
+    .catch(e => {
+      res.send({ success: false, msg: e.message })
     })
-});
+})
 
-router.all('*', (req, res, next) => {
-  console.log('잉?');
-  next(createError(404, '해당 api 없음'));
+router.all('*', function(req, res, next) {
+  next(createError(404, '그런 api 없어'));
 });
 
 module.exports = router;

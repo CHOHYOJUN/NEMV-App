@@ -1,33 +1,39 @@
-const mongoose = require('mongoose')
+var mongoose = require('mongoose')
+const config = require('../../config')
 
 mongoose.set('useCreateIndex', true)
 
-const config = require('../../config')
 
 const userSchema = new mongoose.Schema({
-  name: { type: String, default: '', index: true },
+  name: { type: String, default: '' },
   age: { type: Number, default: 1 },
   id: { type: String, default: '', unique: true, index: true },
-  password: { type: String, default: '' },
+  pwd: { type: String, default: '' },
+  lv: { type: Number, default: 2 }, // 권한 0:관리자, 1:슈퍼유저 , 2:일반유저, 3:손님
+  inCnt: { type: Number, default: 0 }, // login 횟수
   retry: { type: Number, default: 0 } //retry(재시도 횟수)
 })
 
 const User = mongoose.model("User", userSchema)
 
-// User.collection.dropIndexes({ name: 1 })
+// User.collection.dropIndexes({ name: 'admin' })
 
 // 서버 구동시 프라미스 체인을 이용해서 id를 찾고 없으면 만들기
 User.findOne({ id: config.admin.id })
   .then(( result ) => {
     if(!result) {
-      console.log('amin 생성');
+      console.log('admin 생성');
       return User.create({
-        id : config.admin.id,
-        password : config.admin.password,
-        name : config.admin.name,
+        id: config.admin.id,
+        pwd: config.admin.pwd,
+        name: config.admin.name,
+        lv: 0
       })
     }
     return Promise.resolve(null)
+  })
+  .then((result) => {
+    if (result) console.log(`admin:${result.id} created!`);
   })
   .catch((error) => {
     console.error(error.message)
@@ -68,7 +74,7 @@ User.findOne({ id: config.admin.id })
   // })
 
 
-  // User.deleteOne({ name: 'ronaldo' })
+  // User.deleteOne({ id: 'admin' })
   //  .then((result) => {
   //   console.log(result);
   //   return User.find()

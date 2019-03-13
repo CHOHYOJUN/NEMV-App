@@ -31,7 +31,7 @@ export default {
     return {
       form: {
         id: '',
-        password: ''
+        pwd: ''
       }
     }
   },
@@ -39,9 +39,12 @@ export default {
     signIn () {
       this.$axios.post(`${this.$apiRootPath}sign/in`, this.form) //get 은 헤더 옵션, post는 body
         .then((result) => {
-          console.log(result.data)
+          // console.log(result.data)
+          console.log(result.data.token)
+
             if(!result.data.success) return console.error(result.data.msg);
             localStorage.setItem('token', result.data.token)
+            this.$store.commit('getToken')
             this.$router.push({name: 'home' }) //  == location.herf = '/headers'
        })
        .catch((error) => {

@@ -8,6 +8,7 @@ const cors = require('cors')
 
 const mongoose = require('mongoose')
 const User = require('./models/users')
+const Page = require('./models/pages')
 
 const jwt = require('jsonwebtoken')
 
@@ -48,9 +49,14 @@ mongoose.connect(cfg.dbUrl, {useNewUrlParser: true},(err) => {
   if(err) return console.log(err);
   console.log('mongoose connected');
 
+  // console.log('ㅡㅡ user ㅡㅡ');
   User.find()
   .then((result) => console.log(result))
-    .catch((err) => console.error(err))
+  .catch((err) => console.error(err))
+  // console.log('ㅡㅡ page ㅡㅡ');
+  // Page.find()
+  // .then((result) => console.log(result))
+  // .catch((err) => console.error(err))
 
 });
 
